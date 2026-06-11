@@ -1,0 +1,123 @@
+.page {
+  padding: 20px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.appName {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-highlight);
+  letter-spacing: -0.3px;
+}
+
+.date {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* 요약 카드 3개 */
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.summaryCard {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.summaryLabel {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.summaryValue {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-highlight);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 주간 차트 카드 */
+.chartCard {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 18px 12px 8px;
+}
+
+.chartTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+/* 차트 툴팁 */
+.tooltip {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.tooltipLabel {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.tooltipValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-input);
+}
+
+/* 기록 버튼 */
+.recordBtn {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-text-highlight);
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-top: 4px;
+}
+
+.recordBtn:hover {
+  opacity: 0.88;
+}
+
+.recordBtn:active {
+  opacity: 0.7;
+}

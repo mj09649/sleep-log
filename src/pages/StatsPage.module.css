@@ -1,0 +1,177 @@
+.page {
+  padding: 20px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-highlight);
+  letter-spacing: -0.3px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* 요약 카드 2개 */
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.summaryCard {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summaryLabel {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.summaryValue {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text-highlight);
+  letter-spacing: -0.5px;
+}
+
+/* 차트 카드 */
+.chartCard {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 18px 12px 8px;
+}
+
+.chartTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+/* 툴팁 */
+.tooltip {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.tooltipLabel {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.tooltipValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-input);
+}
+
+/* 카페인 & 운동 영향 카드 */
+.influenceCard {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.influenceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.influenceLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.influenceVal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.influenceOn {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.influenceDivider {
+  color: var(--color-border);
+}
+
+.influenceOff {
+  color: var(--color-text-muted);
+}
+
+.influenceEmpty {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 6px 0;
+  line-height: 1.5;
+}
+
+/* 빈 상태 */
+.emptyCard {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 48px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.emptyIcon {
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+.emptyText {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.emptyHint {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}

@@ -1,0 +1,178 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 취침/기상 시간 나란히 */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* time input */
+.input {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-text-input);
+  padding: 11px 13px;
+  font-size: 15px;
+  font-family: inherit;
+  width: 100%;
+  outline: none;
+  color-scheme: dark;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--color-accent);
+}
+
+/* 별점 */
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-border);
+  padding: 2px;
+  transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.star:hover {
+  transform: scale(1.15);
+}
+
+.starActive {
+  color: var(--color-accent);
+}
+
+.qualityLabel {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-left: 4px;
+}
+
+/* 칩 */
+.chips {
+  display: flex;
+  gap: 10px;
+}
+
+.chip {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  color: var(--color-text-muted);
+  padding: 7px 18px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.chip:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.chipActive {
+  background-color: var(--color-border);
+  border-color: var(--color-primary);
+  color: var(--color-text-input);
+}
+
+/* textarea */
+.textarea {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-text-input);
+  padding: 11px 13px;
+  font-size: 14px;
+  font-family: inherit;
+  width: 100%;
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  transition: border-color 0.2s ease;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.textarea:focus {
+  border-color: var(--color-accent);
+}
+
+/* 저장 버튼 */
+.saveBtn {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-text-highlight);
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.saveBtn:hover {
+  opacity: 0.88;
+}
+
+.saveBtn:active {
+  opacity: 0.7;
+}
+
+/* 저장 완료 메시지 */
+.savedMsg {
+  text-align: center;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 500;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
