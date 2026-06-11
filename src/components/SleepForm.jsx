@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react'
 import { supabase, fromDb, toDb } from '../lib/supabase'
 import styles from './SleepForm.module.css'
 
+async function getCurrentUserId() {
+  const { data: { user } } = await supabase.auth.getUser()
+  return user?.id
+}
+
 function getTodayStr() {
   const d = new Date()
   const y = d.getFullYear()
@@ -43,11 +48,13 @@ function SleepForm({ onSaved }) {
 
   const handleSave = async () => {
     setSaving(true)
+    const userId = await getCurrentUserId()
     await supabase
       .from('sleep_records')
-      .upsert(toDb({ date: today, bedTime, wakeTime, quality, caffeine, exercise, memo }), {
-        onConflict: 'date',
-      })
+      .upsert(
+        { ...toDb({ date: today, bedTime, wakeTime, quality, caffeine, exercise, memo }), user_id: userId },
+        { onConflict: 'user_id,date' },
+      )
     setSaving(false)
     setSaved(true)
     setTimeout(() => {

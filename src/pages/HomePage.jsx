@@ -7,6 +7,16 @@ import SleepForm from '../components/SleepForm'
 import { supabase, fromDb } from '../lib/supabase'
 import styles from './HomePage.module.css'
 
+function LogoutIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
+      <path d="M11 2.5H13.5C13.78 2.5 14 2.72 14 3V14C14 14.28 13.78 14.5 13.5 14.5H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M7.5 11.5L11 8.5L7.5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M2.5 8.5H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
 function getTodayStr() {
@@ -112,7 +122,17 @@ function HomePage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.appName}>SleepLog</h1>
-        <p className={styles.date}>{getTodayKorean()}</p>
+        <div className={styles.headerRight}>
+          <p className={styles.date}>{getTodayKorean()}</p>
+          <button
+            type="button"
+            className={styles.logoutBtn}
+            onClick={() => supabase.auth.signOut()}
+            title="로그아웃"
+          >
+            <LogoutIcon />
+          </button>
+        </div>
       </header>
 
       {showForm ? (
