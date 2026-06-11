@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { supabase, fromDb, toDb } from '../lib/supabase'
 import styles from './SleepForm.module.css'
 
 function getTodayStr() {
@@ -7,14 +8,6 @@ function getTodayStr() {
   const m = String(d.getMonth() + 1).padStart(2, '0')
   const day = String(d.getDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
-}
-
-function loadRecords() {
-  try {
-    return JSON.parse(localStorage.getItem('sleeplog_records') || '[]')
-  } catch {
-    return []
-  }
 }
 
 function SleepForm({ onSaved }) {
@@ -27,30 +20,35 @@ function SleepForm({ onSaved }) {
   const [caffeine, setCaffeine] = useState(false)
   const [exercise, setExercise] = useState(false)
   const [memo, setMemo] = useState('')
+  const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
-    const existing = loadRecords().find((r) => r.date === today)
-    if (existing) {
-      setBedTime(existing.bedTime)
-      setWakeTime(existing.wakeTime)
-      setQuality(existing.quality)
-      setCaffeine(existing.caffeine)
-      setExercise(existing.exercise)
-      setMemo(existing.memo)
-    }
+    supabase
+      .from('sleep_records')
+      .select()
+      .eq('date', today)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!data) return
+        const rec = fromDb(data)
+        setBedTime(rec.bedTime)
+        setWakeTime(rec.wakeTime)
+        setQuality(rec.quality)
+        setCaffeine(rec.caffeine)
+        setExercise(rec.exercise)
+        setMemo(rec.memo)
+      })
   }, [today])
 
-  const handleSave = () => {
-    const records = loadRecords()
-    const newRecord = { date: today, bedTime, wakeTime, quality, caffeine, exercise, memo }
-    const idx = records.findIndex((r) => r.date === today)
-    if (idx >= 0) {
-      records[idx] = newRecord
-    } else {
-      records.push(newRecord)
-    }
-    localStorage.setItem('sleeplog_records', JSON.stringify(records))
+  const handleSave = async () => {
+    setSaving(true)
+    await supabase
+      .from('sleep_records')
+      .upsert(toDb({ date: today, bedTime, wakeTime, quality, caffeine, exercise, memo }), {
+        onConflict: 'date',
+      })
+    setSaving(false)
     setSaved(true)
     setTimeout(() => {
       setSaved(false)
@@ -139,8 +137,13 @@ function SleepForm({ onSaved }) {
         </div>
       </div>
 
-      <button type="button" className={styles.saveBtn} onClick={handleSave}>
-        저장하기
+      <button
+        type="button"
+        className={styles.saveBtn}
+        onClick={handleSave}
+        disabled={saving}
+      >
+        {saving ? '저장 중...' : '저장하기'}
       </button>
 
       {saved && <p className={styles.savedMsg}>저장됐어요!</p>}

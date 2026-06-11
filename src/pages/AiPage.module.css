@@ -38,6 +38,13 @@
   margin-top: 2px;
 }
 
+.loadingText {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 40px 0;
+}
+
 /* 기록 없음 상태 */
 .emptyCard {
   background-color: var(--color-card);

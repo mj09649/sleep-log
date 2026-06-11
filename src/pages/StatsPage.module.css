@@ -159,6 +159,13 @@
   text-align: center;
 }
 
+.loadingText {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 40px 0;
+}
+
 .emptyIcon {
   opacity: 0.6;
   margin-bottom: 4px;

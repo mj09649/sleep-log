@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react'
 import {
   LineChart, Line, XAxis, YAxis, Tooltip,
   ResponsiveContainer,
 } from 'recharts'
+import { supabase, fromDb } from '../lib/supabase'
 import styles from './StatsPage.module.css'
 
 function getTodayStr() {
@@ -22,14 +24,6 @@ function calcDurationHours(bedTime, wakeTime) {
   let wakeMin = wh * 60 + wm
   if (wakeMin <= bedMin) wakeMin += 24 * 60
   return (wakeMin - bedMin) / 60
-}
-
-function loadRecords() {
-  try {
-    return JSON.parse(localStorage.getItem('sleeplog_records') || '[]')
-  } catch {
-    return []
-  }
 }
 
 function avg(arr) {
@@ -53,8 +47,32 @@ function ChartTooltip({ active, payload, label, unit }) {
 }
 
 function StatsPage() {
-  const records = loadRecords()
+  const [records, setRecords] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    supabase
+      .from('sleep_records')
+      .select()
+      .then(({ data }) => {
+        if (data) setRecords(data.map(fromDb))
+        setLoading(false)
+      })
+  }, [])
+
   const today = getTodayStr()
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>수면 통계</h1>
+          <p className={styles.subtitle}>최근 30일</p>
+        </header>
+        <p className={styles.loadingText}>불러오는 중...</p>
+      </div>
+    )
+  }
 
   if (records.length === 0) {
     return (

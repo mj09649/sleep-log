@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   Cell, ResponsiveContainer,
 } from 'recharts'
 import SleepForm from '../components/SleepForm'
+import { supabase, fromDb } from '../lib/supabase'
 import styles from './HomePage.module.css'
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
@@ -44,14 +45,6 @@ function formatHours(h) {
   return mins === 0 ? `${hours}h` : `${hours}h ${mins}m`
 }
 
-function loadRecords() {
-  try {
-    return JSON.parse(localStorage.getItem('sleeplog_records') || '[]')
-  } catch {
-    return []
-  }
-}
-
 function ChartTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null
   return (
@@ -64,15 +57,23 @@ function ChartTooltip({ active, payload, label }) {
 
 function HomePage() {
   const [showForm, setShowForm] = useState(false)
-  const [records, setRecords] = useState(() => loadRecords())
+  const [records, setRecords] = useState([])
   const today = getTodayStr()
 
-  const handleFormSaved = () => {
-    setRecords(loadRecords())
+  const fetchRecords = useCallback(async () => {
+    const { data } = await supabase.from('sleep_records').select()
+    if (data) setRecords(data.map(fromDb))
+  }, [])
+
+  useEffect(() => {
+    fetchRecords()
+  }, [fetchRecords])
+
+  const handleFormSaved = async () => {
+    await fetchRecords()
     setShowForm(false)
   }
 
-  // 최근 7일 날짜 배열 (6일 전 ~ 오늘)
   const last7Days = Array.from({ length: 7 }, (_, i) => getDateStrOffset(6 - i))
 
   const chartData = last7Days.map((date) => {
@@ -118,7 +119,6 @@ function HomePage() {
         <SleepForm onSaved={handleFormSaved} />
       ) : (
         <>
-          {/* 요약 카드 3개 */}
           <div className={styles.summaryRow}>
             <div className={styles.summaryCard}>
               <span className={styles.summaryLabel}>어젯밤</span>
@@ -138,7 +138,6 @@ function HomePage() {
             </div>
           </div>
 
-          {/* 주간 바 차트 */}
           <div className={styles.chartCard}>
             <p className={styles.chartTitle}>주간 수면</p>
             <ResponsiveContainer width="100%" height={180}>
@@ -174,7 +173,6 @@ function HomePage() {
             </ResponsiveContainer>
           </div>
 
-          {/* 기록 버튼 */}
           <button
             type="button"
             className={styles.recordBtn}

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { supabase, fromDb } from '../lib/supabase'
 import styles from './AiPage.module.css'
 
 function getTodayStr() {
@@ -19,14 +20,6 @@ function calcDurationHours(bedTime, wakeTime) {
   let wakeMin = wh * 60 + wm
   if (wakeMin <= bedMin) wakeMin += 24 * 60
   return (wakeMin - bedMin) / 60
-}
-
-function loadRecords() {
-  try {
-    return JSON.parse(localStorage.getItem('sleeplog_records') || '[]')
-  } catch {
-    return []
-  }
 }
 
 function buildPrompt(records) {
@@ -54,11 +47,22 @@ ${rows}
 }
 
 function AiPage() {
+  const [records, setRecords] = useState([])
+  const [loading, setLoading] = useState(true)
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState('')
   const [error, setError] = useState(null)
 
-  const records = loadRecords()
+  useEffect(() => {
+    supabase
+      .from('sleep_records')
+      .select()
+      .then(({ data }) => {
+        if (data) setRecords(data.map(fromDb))
+        setLoading(false)
+      })
+  }, [])
+
   const today = getTodayStr()
   const cutoff = getDateStrOffset(13)
   const hasRecords = records.some((r) => r.date >= cutoff && r.date <= today)
@@ -128,6 +132,25 @@ function AiPage() {
       setError(err.message || '네트워크 오류가 발생했습니다.')
       setStatus('error')
     }
+  }
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <header className={styles.header}>
+          <div className={styles.iconWrap}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M10 2L11.54 7H17L12.74 9.96L14.28 15L10 12.04L5.72 15L7.26 9.96L3 7H8.46L10 2Z" fill="currentColor" />
+            </svg>
+          </div>
+          <div>
+            <h1 className={styles.title}>AI 수면 분석</h1>
+            <p className={styles.subtitle}>최근 14일 기록 기반</p>
+          </div>
+        </header>
+        <p className={styles.loadingText}>불러오는 중...</p>
+      </div>
+    )
   }
 
   return (
